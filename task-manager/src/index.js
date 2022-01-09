@@ -17,8 +17,41 @@ app.get('/allUsers', (req, res) => {
         res.status(400).send(err)
     })
 })
+app.get('/users/:id',(req,res)=>{
+    const _id=req.params.id
+    User.findById(_id).then((user)=>{
+        if(!user){
+            return res.status(404).send()
+        }
+        res.send(user)
+    }).catch((e)=>{
+        res.status(500).send(e)
+    })
+})
+
 app.post('/tasks', (req, res) => {
     const tasks = new Task(req.body);
     tasks.save().then(() => { res.status(201).send(req.body) }).catch(err => { res.status(400).send(err) })
 })
+app.get('/tasks', (req, res)=>{
+    Task.find({}).then(task => {
+        res.send(task)
+        
+    }).catch(err => { 
+        res.status(400).send(err)
+    })
+})
+
+app.get('/tasks/:id', (req, res) => {
+    const taskId=req.params.id
+    Task.findById(taskId).then(task => {
+        if(!task){
+            res.status(404).send()
+        }
+        res.send(task)
+    }).catch(err => {
+        res.status(500).send(err)
+    })
+})
+
 app.listen(port, () => { console.log('listening on port' + port) })
