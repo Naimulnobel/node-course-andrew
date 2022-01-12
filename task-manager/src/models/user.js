@@ -39,11 +39,26 @@ const userSchema = new mongoose.Schema({
                 throw new Error('password cannot contain "password"')
             }
         }
-    }
+    },
+    tokens: [{
+        token: {
+            type: String,
+            required: true,
+        }
+    }]
 })
+userSchema.methods.toJSON = function () {
+    const user = this
+    const userObject = user.toObject()
+    delete userObject.password
+    delete userObject.tokens
+    return userObject
+}
 userSchema.methods.generateAuthToken = async function () {
     const user = this
     const token = jwt.sign({ _id: user._id.toString() }, 'thisismyid')
+    user.tokens = user.tokens.concat({ token })
+    await user.save()
     return token
 }
 userSchema.statics.findByCredentials = async (email, password) => {
@@ -59,7 +74,6 @@ userSchema.statics.findByCredentials = async (email, password) => {
 }
 userSchema.pre('save', async function (next) {
     const user = this
-    console.log('just before')
     if (user.isModified('password')) {
         user.password = await bcrypt.hash(user.password, 8)
     }

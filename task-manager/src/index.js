@@ -5,6 +5,17 @@ const userRouter = require('./routers/user')
 const taskRouter = require('./routers/task')
 const app = express()
 const port = process.env.PORT || 3000
+// app.use((req, res, next) => {
+//    if(req.method === 'GET'){
+
+//    }else{
+//        next()
+//    }
+// })
+// app.use((req, res, next) => {
+//     res.status(503).send("Site is currently unavailable. Please try again")
+// })
+
 app.use(express.json())
 app.use(userRouter)
 app.use(taskRouter)
@@ -23,10 +34,10 @@ const jwt = require('jsonwebtoken')
 //     console.log(isMatch)
 // }
 // myFunction()
-const myFunction = async () => {
-    const token = jwt.sign({ id: 'abc' }, 'thisismyid', { expiresIn: '7 days' })
-    console.log(token)
-    const data = jwt.verify(token, 'thisismyid')
-    console.log(data)
-}
-myFunction()
+// const myFunction = async () => {
+//     const token = jwt.sign({ id: 'abc' }, 'thisismyid', { expiresIn: '7 days' })
+//     console.log(token)
+//     const data = jwt.verify(token, 'thisismyid')
+//     console.log(data)
+// }
+// myFunction()
