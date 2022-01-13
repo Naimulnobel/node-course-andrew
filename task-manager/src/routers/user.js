@@ -45,25 +45,26 @@ router.get('/users/me', auth, async (req, res) => {
 //     //     res.status(500).send(e)
 //     // })
 // })
-router.patch('/users/:id', async (req, res) => {
+router.patch('/users/me', auth, async (req, res) => {
     const upadtes = Object.keys(req.body)
     const allowedUpdates = ['name', 'email', 'age', 'password']
     const isValidOpretor = upadtes.every((update) => allowedUpdates.includes(update))
-    const id = req.params.id
     if (!isValidOpretor) {
         return res.status(404).send({ "error": "invalid poperty update" })
     }
+    console.log(req.user)
     try {
         // const user= await User.findByIdAndUpdate(id,req.body,{new:true,runValidators:true})
-        const user = await User.findById(id)
-        upades.forEach((update) => user[update] = req.body[update])
-        await user.save()
-        if (!user) {
+        // const user = await req.user
+
+        upadtes.forEach((update) => req.user[update] = req.body[update])
+        await req.user.save()
+        if (!req.user) {
             return res.status(404).send()
         }
-        res.status(200).send(user)
+        res.status(200).send(req.user)
     } catch (error) {
-        res.status(400).send(err)
+        res.status(400).send()
     }
 })
 router.delete('/users/me', auth, async (req, res) => {
@@ -76,12 +77,12 @@ router.delete('/users/me', auth, async (req, res) => {
         // }
         // console.log('y')
         await req.user.remove()
-        res.send(user)
+        res.send(req.user)
     } catch (error) {
         res.status(500).send()
     }
 })
-router.post('/users/login',  async (req, res) => {
+router.post('/users/login', async (req, res) => {
     try {
         const user = await User.findByCredentials(req.body.email, req.body.password)
         const token = await user.generateAuthToken()
