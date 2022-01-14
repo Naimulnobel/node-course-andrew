@@ -25,7 +25,8 @@ app.use(taskRouter)
 app.listen(port, () => { console.log('listening on port' + port) })
 
 const jwt = require('jsonwebtoken')
-
+const Task= require('./models/task')
+const User= require('./models/user')
 // const myFunction = async () => {
 //     const password = 'red1234'
 //     const hasedPassword = await bcrypt.hash(password, 8)
@@ -41,3 +42,12 @@ const jwt = require('jsonwebtoken')
 //     console.log(data)
 // }
 // myFunction()
+// const main = async () => {
+//     // const task = await Task.findById("61e0eacf893fe303a93d462a")
+//     // await task.populate('owner').execPopulate()
+//     // console.log(task.owner)
+//     const user=await User.findById('61dff6340b6306050ee1b9eb')
+//     await user.populate('tasks').execPopulate()
+//     console.log(user.tasks)
+// }
+// main()
