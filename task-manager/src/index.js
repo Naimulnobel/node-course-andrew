@@ -1,5 +1,6 @@
 const express = require('express')
 require('./db/mongoose')
+const multer = require('multer')
 const res = require('express/lib/response')
 const userRouter = require('./routers/user')
 const taskRouter = require('./routers/task')
@@ -25,8 +26,8 @@ app.use(taskRouter)
 app.listen(port, () => { console.log('listening on port' + port) })
 
 const jwt = require('jsonwebtoken')
-const Task= require('./models/task')
-const User= require('./models/user')
+const Task = require('./models/task')
+const User = require('./models/user')
 // const myFunction = async () => {
 //     const password = 'red1234'
 //     const hasedPassword = await bcrypt.hash(password, 8)
@@ -51,3 +52,8 @@ const User= require('./models/user')
 //     console.log(user.tasks)
 // }
 // main()
+const upload = multer({ dest: 'images' })
+app.post('/upload', upload.single('upload'), (req, res) => {
+    res.send()
+
+})
